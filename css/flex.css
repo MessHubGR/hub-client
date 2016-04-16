@@ -1,0 +1,25 @@
+.box {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+    width: 100%;
+}
+
+.box .row {
+    flex: 0 1 0px;
+}
+
+.box .row.header {
+    flex: 0 1 auto;
+    background-color: #2574A9;
+    font-family: sans-serif;
+}
+
+.box .row.content {
+    flex: 1 1 auto;
+    background-color: #2C3E50;
+}
+
+.box .row.footer {
+	flex: 0 1 10px;
+}
