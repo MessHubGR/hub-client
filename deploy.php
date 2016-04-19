@@ -1,9 +1,22 @@
 <?php
 session_start();
 if(!empty($_POST)){
-    //echo '<div id="overlay"><div class="loader more"></div></div>';
-    $furl="http://40.68.43.138/api/hubs/deploy";
-    $turl="http://40.68.43.138/api/authenticate";
+    echo '<div id="overlay"><div class="loader more"></div></div>';
+
+    $settings = array();
+    $settings['domain'] = $_POST['domain'];
+
+    if(strpos($_POST['domain'], 'http')!== false){
+        $settings['domain'] = $_POST['domain'];
+    }
+    else {
+        $settings['domain'] = "http://" . $_POST['domain'];
+    }
+
+    file_put_contents("cfg/settings.json", json_encode($settings));
+
+    $furl = $settings['domain'] . "/api/hubs/deploy";
+    $turl = $settings['domain'] . "/api/authenticate";
 
     $stupidtokens = array();
     $stupidtokens['username'] = 'admin';
@@ -40,18 +53,16 @@ if(!empty($_POST)){
     curl_close($curl);
 
     if(strpos($result, 'active')!== false){//CLEANUP
-        file_put_contents("/saves/hubdetails.json",$result);
-        $_SESSION['deployed'] = true;
+        file_put_contents("saves/hubdetails.json",$result);
         $_SESSION['failedtodeploy'] = false;
-        $host = $_SERVER['HTTP_HOST'];
-        $uri = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-        $extra = 'index.php';
-        header("Location: http://$host$uri/$extra");
+
+        header("Location: /index.php");
+        die();
     }
     else{
-        header("Refresh:0");
-        $_SESSION['deployed'] = false;
         $_SESSION['failedtodeploy'] = true;
+        header("Refresh:0");
+        die();
     }
 }
 ?>
@@ -75,14 +86,14 @@ if(!empty($_POST)){
         <?php include 'bar.php';?>
 
         <div class="row content" align="center" style="position: relative; height: 100%;">
-            <div style="position: absolute; top: 45%; left: 50%; transform: translate(-50%,-50%);">
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);">
                 <span style="font-size: 4em; color: #B0BAC4;">Welcome to</span>
                 <br />
                 <span style="font-size: 5em; color: #22A7F0;">MessHub</span>
                 <hr style="width:60em;">
                 <br />
                 <p style="font-size: 1.5em;">
-                    This hub is not deployed.<br />
+                    This hub has not been deployed yet.<br />
                     Please register it at the dashboard and fill out the form below.
                 </p>
                 <?php
@@ -92,6 +103,12 @@ if(!empty($_POST)){
                 ?>
                 <br />
                 <form method="POST" action="deploy.php">
+                    <div class="input-control text">
+                        <label for="keyin" style="font-size: 1.2em;">Domain</label>
+                        <input type="text" name="domain" id="domain" placeholder="Domain" style="text-align:center; font-size: 1.2em;" required>
+                    </div>
+                    <br />
+                    <br />
                     <div class="input-control text">
                         <label for="keyin" style="font-size: 1.2em;">Hub's Registration Key</label>
                         <input type="text" name="keyin" id="keyin" maxlength="16" placeholder="Hub Key" style="text-align:center; font-size: 1.2em;" required>

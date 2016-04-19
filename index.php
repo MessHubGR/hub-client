@@ -1,7 +1,36 @@
-<? php
+<?php
 session_start();
-$homepage = file_get_contents('hubdetails.json',FILE_USE_INCLUDE_PATH);
-echo $homepage;
-$json = json_decode(file_get_contents("./hubdetails.json"), true);
-var_dump($json);
+session_unset();
+
+//Loading configs and saves
+$hdfile="saves/hubdetails.json";
+$sfile="cfg/settings.json";
+
+if(file_exists($hdfile)) {
+    $hubdetails = json_decode(file_get_contents($hdfile), true);
+}
+else {
+    header('Location: /deploy.php');
+    die();
+}
+$settings = json_decode(file_get_contents($sfile), true);
+echo $settings['domain'];
+
+//Checking connection to MessHub.
+$connected = @fsockopen(explode("//", $settings['domain'])[1], 80);
+if ($connected) {
+    header('Location: /menu.php');
+    die();
+}
+else {
+    echo "Please connect to the internet and refresh this page.";
+}
 ?>
+<html>
+    <head>
+        <title>MessHub Index</title>
+    </head>
+    <body>
+        You shouldn't have gotten stuck here...
+    </body>
+</html>
