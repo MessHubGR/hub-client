@@ -71,6 +71,10 @@ h1 {
     -ms-user-select: none; /* IE10+ */
 }
 
+.btn.red{
+    background: red;
+}
+
 .btn:hover {
     background: #1a6a9c;
     text-decoration: none;

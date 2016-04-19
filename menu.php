@@ -1,3 +1,14 @@
+<?php
+session_start();
+$_SESSION['loggedin'] = 1;
+if(!isset($_SESSION['settings'])) {
+    header("Location: /index.php");
+}
+if(isset($_POST['logout'])){
+    unset($_SESSION['loggedin']);
+}
+?>
+
 <html>
     <head>
         <title>MessHub</title>
@@ -20,8 +31,11 @@
                 <div style="display: inline-block; margin: 3em;">
                     <button class="btn" onclick="buttonPress('dispense.php')">Dispense</button><br />
                     <button class="btn">Internet</button><br />
-                    <button class="btn">Account Settings</button><br />
-                    <button class="btn">Make a Request</button>
+                    <?php
+                    if (isset($_SESSION['loggedin'])) {
+                        echo '<form method="POST" action="'. $_SERVER['PHP_SELF'] .'"><button class="btn red" type="submit" id="logout" name="logout">Log Out</button></form>';
+                    }
+                    ?>
                 </div>
                 <div class="sidebar">
                     <div class="sidebar item">

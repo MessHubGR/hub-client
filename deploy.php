@@ -24,7 +24,7 @@ if(!empty($_POST)){
 
     $murl = curl_init();
     curl_setopt($murl, CURLOPT_URL, $turl);
-    curl_setopt($murl,CURLOPT_POST, sizeof($stupidtokens));
+    curl_setopt($murl, CURLOPT_POST, sizeof($stupidtokens));
     curl_setopt($murl, CURLOPT_POSTFIELDS, $stupidtokens);
     curl_setopt($murl, CURLOPT_RETURNTRANSFER, true);
 
@@ -45,7 +45,7 @@ if(!empty($_POST)){
 
     $curl = curl_init();
     curl_setopt($curl, CURLOPT_URL, $furl);
-    curl_setopt($curl,CURLOPT_POST, sizeof($data));
+    curl_setopt($curl, CURLOPT_POST, sizeof($data));
     curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
     curl_setopt($curl, CURLOPT_HTTPHEADER, $auth);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -102,7 +102,7 @@ if(!empty($_POST)){
                 }
                 ?>
                 <br />
-                <form method="POST" action="deploy.php">
+                <form method="POST" action="<?= $_SERVER['PHP_SELF'] ?>">
                     <div class="input-control text">
                         <label for="keyin" style="font-size: 1.2em;">Domain</label>
                         <input type="text" name="domain" id="domain" placeholder="Domain" style="text-align:center; font-size: 1.2em;" required>

@@ -14,7 +14,7 @@ else {
     die();
 }
 $settings = json_decode(file_get_contents($sfile), true);
-echo $settings['domain'];
+$_SESSION['settings'] = $settings;
 
 //Checking connection to MessHub.
 $connected = @fsockopen(explode("//", $settings['domain'])[1], 80);
