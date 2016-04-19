@@ -1,5 +1,7 @@
 <?php
 session_start();
+unset($_SESSION['logintoken']);
+
 if(!empty($_POST)){
     echo '<div id="overlay"><div class="loader more"></div></div>';
 

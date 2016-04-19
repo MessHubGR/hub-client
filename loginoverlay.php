@@ -1,6 +1,8 @@
 <?php
-session_start();
-unset($_SESSION['loggedin']);
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+unset($_SESSION['logintoken']);
 
 $msg = "";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -26,41 +28,47 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $json = json_decode($json,true);
         curl_close($murl);
 
-        if(isset($json['token'])){
+        if(isset($json['token'])) {
+            unset($_SESSION['loginfailed']);
             $_SESSION['logintoken'] = $json['token'];
-            $_SESSION['loggedin'] = "ok";
             exit;
         }
-
-        $msg = "Username and password do not match."; //Exit; before you get to this if they logged in.
+        else {
+            $_SESSION['loginfailed'] = "You entered invalid credentials.<br />Please try again";
+        }
     }
 }
 ?>
 
-<!--
-<style>.login-form { width: 25rem; height: 17.75rem; position: fixed; top: 50%; margin-top: -9.375rem; left: 50%; margin-left: -12.5rem; background-color: rgb(255, 255, 255); opacity: 0; transform: scale(0.8); }</style>
-<div style="opacity: 1; transform: scale(1); transition: all 0.5s ease 0s;" class="login-form padding20 block-shadow">
-    <form name="login" action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
-        <h1 class="text-light" style="font-family: Trebuchet MS;">Login to MessHub</h1>
-        <hr class="thin">
-        <br>
-        <div class="input-control text full-size" data-role="input">
-            <label for="name">Username:</label>
-            <input style="padding-right: 42px;" name="name" id="name" type="text" required>
-            <button type="button" tabindex="-1" class="button helper-button clear"><span class="mif-cross"></span></button>
-        </div>
-        <br>
-        <br>
-        <div class="input-control password full-size" data-role="input">
-            <label for="pass">Password:</label>
-            <input style="padding-right: 42px;" name="pass" id="pass" type="password" required>
-            <button type="button" tabindex="-1" class="button helper-button reveal"><span class="mif-looks"></span></button>
-        </div>
-        <br>
-        <br>
-        <div class="form-actions">
-            <button type="submit" class="button primary">Login</button>
-        </div>
-    </form>
-</div>
--->
+<html>
+    <style>.login-form { width: 25rem; height: 19.75rem; position: fixed; top: 50%; margin-top: -9.375rem; left: 50%; margin-left: -12.5rem; background-color: rgb(255, 255, 255); opacity: 0; transform: scale(0.8); }</style>
+    <div style="opacity: 1; transform: scale(1); transition: all 0.5s ease 0s;" class="login-form padding20 block-shadow">
+        <form name="login" action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
+            <h1 class="text-light" style="font-family: Trebuchet MS;">Login to MessHub</h1>
+            <hr class="thin">
+            <br>
+            <?php
+                if(isset($_SESSION['loginfailed'])) {
+                    echo "<h4>You entered invalid credentials.<br />Please try again.</h4>";
+                }
+            ?>
+            <div class="input-control text full-size" data-role="input">
+                <label for="name">Username:</label>
+                <input style="padding-right: 42px;" name="name" id="name" type="text" required>
+                <button type="button" tabindex="-1" class="button helper-button clear"><span class="mif-cross"></span></button>
+            </div>
+            <br>
+            <br>
+            <div class="input-control password full-size" data-role="input">
+                <label for="pass">Password:</label>
+                <input style="padding-right: 42px;" name="pass" id="pass" type="password" required>
+                <button type="button" tabindex="-1" class="button helper-button reveal"><span class="mif-looks"></span></button>
+            </div>
+            <br>
+            <br>
+            <div class="form-actions">
+                <button type="submit" class="button primary">Login</button>
+            </div>
+        </form>
+    </div>
+</html>

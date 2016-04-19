@@ -1,11 +1,10 @@
 <?php
 session_start();
-$_SESSION['loggedin'] = 1;
 if(!isset($_SESSION['settings'])) {
     header("Location: /index.php");
 }
 if(isset($_POST['logout'])){
-    unset($_SESSION['loggedin']);
+    unset($_SESSION['logintoken']);
 }
 ?>
 
@@ -32,7 +31,7 @@ if(isset($_POST['logout'])){
                     <button class="btn" onclick="buttonPress('dispense.php')">Dispense</button><br />
                     <button class="btn">Internet</button><br />
                     <?php
-                    if (isset($_SESSION['loggedin'])) {
+                    if (isset($_SESSION['logintoken'])) {
                         echo '<form method="POST" action="'. $_SERVER['PHP_SELF'] .'"><button class="btn red" type="submit" id="logout" name="logout">Log Out</button></form>';
                     }
                     ?>

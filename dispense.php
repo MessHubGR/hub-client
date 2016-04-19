@@ -4,13 +4,40 @@
         header("Location: /index.php");
     }
 
-    //unset($_SESSION['loggedin']); To require login again.
-    if (!isset($_SESSION['loggedin'])) {
-        $_SESSION['goto'] = basename($_SERVER['PHP_SELF']);
-        header("Location: /login.php");
-        die();
+    //unset($_SESSION['logintoken']); To require login again.
+    if (!isset($_SESSION['logintoken'])) {
+        include 'loginoverlay.php';
     }
     else {
-        echo "GO";
+        echo $_SESSION['logintoken']. "thatwastoken";
     }
 ?>
+
+<html>
+    <head>
+        <title>MessHub</title>
+        <link href="css/metro.min.css" rel="stylesheet" type="text/css">
+        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href="css/flex.css" rel="stylesheet" type="text/css">
+        <link href="css/menus.css" rel="stylesheet" type="text/css">
+        <link href="css/flag-icon.min.css" rel="stylesheet" type="text/css">
+
+        <script src="js/clock.js"></script>
+        <script src="js/metro.min.js"></script>
+        <script src="js/menuredirect.js"></script>
+    </head>
+
+    <body onload="startTime()">
+        <div class="box">
+            <?php include 'bar.php';?>
+
+            <div class="row content">
+                <?php
+                if (!isset($_SESSION['logintoken'])) {
+                    include 'loginoverlay.php';
+                }
+                ?>
+            </div>
+        </div>
+    </body>
+</html>
