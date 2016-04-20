@@ -15,6 +15,13 @@ if(!empty($_POST)){
         $settings['domain'] = "http://" . $_POST['domain'];
     }
 
+    $connected = @fsockopen(explode("//", $settings['domain'])[1], 80);
+    if (!$connected) {
+        $_SESSION['failedtodeploy'] = true;
+        header("Refresh:0");
+        die();
+    }
+
     file_put_contents("cfg/settings.json", json_encode($settings));
 
     $furl = $settings['domain'] . "/api/hubs/deploy";

@@ -6,7 +6,7 @@ session_unset();
 $hdfile="saves/hubdetails.json";
 $sfile="cfg/settings.json";
 
-if(file_exists($hdfile)) {
+if(file_exists($hdfile) and file_exists($sfile)) {
     $hubdetails = json_decode(file_get_contents($hdfile), true);
 }
 else {
@@ -15,6 +15,9 @@ else {
 }
 $settings = json_decode(file_get_contents($sfile), true);
 $_SESSION['settings'] = $settings;
+
+$details = json_decode(file_get_contents($hdfile), true);
+$_SESSION['hubdetails'] = $details;
 
 //Checking connection to MessHub.
 $connected = @fsockopen(explode("//", $settings['domain'])[1], 80);

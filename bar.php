@@ -1,7 +1,14 @@
 <div class="row header">
     <ul class="bar">
         <li class="item" style="margin-left:1em;">
-            <h1>MessHub</h1>
+            <a href="index.php" style="color: black;">
+                <h1 style="font-family:Trebuchet MS;">MessHub
+                <?php
+                if($_SERVER['PHP_SELF'] != "/menu.php"){
+                    echo '<i class="fa fa-home" aria-hidden="true" style="margin-left: 16px;"></i>';
+                }
+                ?></h1>
+            </a>
         </li>
         <li class="item" style="float: right; margin-right: 6px; margin-left: 36px;">
             <i class="fa fa-battery-full"></i>
