@@ -17,7 +17,7 @@
 
         $data = array();
         $data['hub'] = $_SESSION['hubdetails']['hub']['id'];
-        $data['type'] = "takeaway";
+        $data['type'] = "refill";
         $data['meals'] = $quantity;
         $data['drinks'] = 0;
 
@@ -33,14 +33,13 @@
         curl_close($murl);
 
         if(isset($json['message'])){
-            $_SESSION['dispensefailed'] = $json['message'];
+            $_SESSION['refillfailed'] = $json['message'];
             header("Refresh:0");
             exit;
         }
         else {
-            $output = shell_exec('set /p x="'. $quantity .'" <nul >\\.\COM3');
-            echo '<script>alert("Dispensing your meals now!")</script>';
             header('Location: /menu.php');
+            echo '<script>alert("Refilled successfully!")</script>';
             die();
             //echo "<pre>$output</pre>";
         }
@@ -69,10 +68,10 @@
             <div class="row content" align="center" style="position: relative; height: 100%;">
                 <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);">
                     <h1>Welcome!</h1>
-                    <h2>Select how many meals you want to dispense:</h2>
+                    <h2>Select how many meals you have refilled:</h2>
                     <?php
-                        if(isset($_SESSION['dispensefailed'])) {
-                            echo "<font color='red'>". $_SESSION['dispensefailed'] ."</font><br />";
+                        if(isset($_SESSION['refillailed'])) {
+                            echo "<font color='red'>". $_SESSION['refillfailed'] ."</font><br />";
                         }
                     ?>
                     <form method="POST" action="<?= $_SERVER['PHP_SELF'] ?>">

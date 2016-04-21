@@ -29,7 +29,7 @@ if(isset($_POST['logout'])){
             <div class="row content">
                 <div style="display: inline-block; margin: 3em;">
                     <button class="btn" onclick="buttonPress('dispense.php')">Dispense</button><br />
-                    <button class="btn">Internet</button><br />
+                    <button class="btn" onclick="window.open('http://www.bing.com')">Internet</button><br />
                     <?php
                     if (isset($_SESSION['logintoken'])) {
                         echo '<form method="POST" action="'. $_SERVER['PHP_SELF'] .'"><button class="btn red" type="submit" id="logout" name="logout">Log Out</button></form>';
