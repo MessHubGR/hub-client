@@ -10,9 +10,9 @@
         $turl = $_SESSION['settings']['domain'] . "/api/actions";
 
         $auth = array(
-            "authorization: bearer " . $_SESSION['logintoken'],
+            "authorization: bearer ".$_SESSION['logintoken'],
             "cache-control: no-cache",
-            "postman-token: b548747a-18cc-015c-0f6c-217d33d41334"
+            "postman-token: 21c1593f-d63d-dde3-a50c-7cbcf59ae738"
         );
 
         $data = array();
@@ -25,6 +25,7 @@
         curl_setopt($murl, CURLOPT_URL, $turl);
         curl_setopt($murl, CURLOPT_POST, sizeof($data));
         curl_setopt($murl, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($murl, CURLOPT_HTTPHEADER, $auth);
         curl_setopt($murl, CURLOPT_RETURNTRANSFER, true);
 
         $json = curl_exec($murl);
@@ -32,11 +33,14 @@
         curl_close($murl);
 
         if(isset($json['message'])){
-
+            $_SESSION['dispensefailed'] = $json['message'];
+            header("Refresh:0");
+            exit;
         }
         else {
-            $output = shell_exec('dispense' . $quantity);
-            echo "<pre>$output</pre>";
+            echo "MILANO PRE";
+            //$output = shell_exec('dispense' . $quantity);
+            //echo "<pre>$output</pre>";
         }
     }
 ?>
@@ -64,6 +68,11 @@
                 <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);">
                     <h1>Welcome!</h1>
                     <h2>Select how many meals you want to dispense:</h2>
+                    <?php
+                        if(isset($_SESSION['dispensefailed'])) {
+                            echo "<font color='red'>". $_SESSION['dispensefailed'] ."</font><br />";
+                        }
+                    ?>
                     <form method="POST" action="<?= $_SERVER['PHP_SELF'] ?>">
                         <div class="input-control text" data-role="keypad">
                             <input type="number" name="mealq" id="mealq" min="0" placeholder="Meal Quantity" style="text-align:center; font-size: 1.2em;" required>

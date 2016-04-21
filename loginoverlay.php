@@ -3,6 +3,7 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 unset($_SESSION['logintoken']);
+unset($_SESSION['dispensefailed']);
 
 $msg = "";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
